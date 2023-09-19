@@ -13,8 +13,61 @@ const altColor = document.getElementsByClassName('altColor')
 hexInput.value = ""
 slider.value = 0;
 sliderText.innerText = `0%`;
+slider.disabled = true;
+slider.style.cursor = "default"
+toggleBtn.style.cursor = "default"
+lightenText.classList.add('unselected');
+
+
+const DisableSliderandToggleBtn = () => {
+  lightenText.classList.add('unselected');
+  darkenText.classList.add('unselected');
+  slider.disabled = true;
+  slider.style.cursor = "default";
+  toggleBtn.style.cursor = "default";
+}
+
+const EnableSliderandToggleBtn = () => {
+  slider.disabled = false;
+  slider.style.cursor = "pointer"
+  toggleBtn.style.cursor = "pointer"
+
+  if(toggleBtn.classList.contains('toggled')){
+    darkenText.classList.remove('unselected');
+    altColor[1].style.backgroundColor = "black"
+  }
+  else{
+    lightenText.classList.remove('unselected');
+  }
+}
+
+const ButtonsColorStyle = () => {
+  altColor[0].innerHTML = `CLICK ME`
+  altColor[0].style.backgroundColor = "black"
+  altColor[0].style.padding = "10px 20px"
+  altColor[0].style.borderRadius = "10px"
+
+  altColor[1].innerHTML = `CLICK ME`
+  altColor[1].style.backgroundColor = "white"
+  altColor[1].style.padding = "10px 20px"
+  altColor[1].style.borderRadius = "10px"
+}
+
+const ResetOnKeyUp = () => {
+  altColor[0].innerHTML = ''
+  altColor[0].style.padding = "0"
+  altColor[1].innerHTML = ''
+  altColor[1].style.padding = "0"
+  inputColor.style.backgroundColor = "#c6d5ac"
+  alteredColor.style.backgroundColor = "#c6d5ac"
+  slider.value = 0
+  sliderText.innerText = `0%`
+  alteredColorText.innerText = "Altered Color"
+}
 
 toggleBtn.addEventListener('click', () => {
+  if(!isValidHex(hexInput.value)) return;
+
   if(toggleBtn.classList.contains('toggled')){
     toggleBtn.classList.remove('toggled');
     lightenText.classList.remove('unselected');
@@ -22,6 +75,7 @@ toggleBtn.addEventListener('click', () => {
 
     alteredColor.style.color = "black"
     alteredColor.style.backgroundColor = inputColor.style.backgroundColor
+    altColor[1].style.backgroundColor = "white"
 
   } else {
     toggleBtn.classList.add('toggled');
@@ -30,17 +84,28 @@ toggleBtn.addEventListener('click', () => {
 
     alteredColor.style.color = "white"
     alteredColor.style.backgroundColor = inputColor.style.backgroundColor
+    altColor[1].style.backgroundColor = "black"
   }
   reset()
+  // altColor[1] is the button 'CLICK ME' inside Altered Color. It switches it's background
+  // color every time you play with the toggle button (Lighten or Darken)
+
 })
 
 
 hexInput.addEventListener('keyup', () => {
   
   const hex = hexInput.value;
-  if(!isValidHex(hex)) return;
+  if(!isValidHex(hex)) {
+    ResetOnKeyUp()
+    DisableSliderandToggleBtn()
+    return;
+  }
 
   const strippedHex = hex.replace('#', '');
+
+  // DEBUGGING PURPOSES
+  //console.log(strippedHex)
 
   inputColor.style.backgroundColor = "#" + strippedHex;
 
@@ -53,8 +118,11 @@ hexInput.addEventListener('keyup', () => {
   alteredColor.style.backgroundColor = alteredHex;
   alteredColorText.innerText = `Altered Color ${alteredHex}`;
 
+  ButtonsColorStyle()
+  EnableSliderandToggleBtn()
   reset()
 })
+
 
 const isValidHex = (hex) => {
     if(!hex) return false; // It checks if the hex parameter is falsy (e.g., empty string, undefined, null).
@@ -131,14 +199,14 @@ slider.addEventListener('input', () => {
   
   const alteredHex = alterColor(hexInput.value, valueAddition);
   alteredColor.style.backgroundColor = alteredHex;
-  alteredColorText.innerText = `Altered Color ${alteredHex}`;
+  alteredColorText.innerText = `Altered Color : ${alteredHex}`;
 })
 
 const reset = () => {
   slider.value = 0;
   sliderText.innerText = `0%`;
-  alteredColor.style.backgroundColor = hexInput.value;
-  alteredColorText.innerText = `Altered Color ${hexInput.value}`;
+  alteredColor.style.backgroundColor = alterColor(hexInput.value, slider.value);
+  alteredColorText.innerText = `Altered Color : ${alterColor(hexInput.value, slider.value)}`;
 }
 
 inputColor.addEventListener('click', function (){
@@ -152,6 +220,7 @@ inputColor.addEventListener('click', function (){
 
 alteredColor.addEventListener('click',function (){
     if(!isValidHex(hexInput.value)) return;
+
     //console.log(alteredHex(alteredColorText.innerText)) // DEBUGGING PURPOSES
     navigator.clipboard.writeText(alteredHexValue(alteredColorText.innerText));
 
@@ -167,7 +236,7 @@ const alteredHexValue = () => {
   let alteredText = alteredColorText.innerText
   const word = alteredText.split(' ')
 
-  return "#" + word[2].replace('#','')
+  return "#" + word[3].replace('#','')
 }
 
 

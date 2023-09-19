@@ -7,6 +7,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     background-color: #3e4560;
     color: white;
+    user-select: none;
 }
 
 .container {
@@ -22,7 +23,7 @@ body {
 }
 
 p {
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 label {
@@ -32,7 +33,11 @@ label {
 }
 
 input {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+}
+
+input[type="range"] {
+    cursor : pointer;
 }
 
 input[type="text"]{
@@ -63,7 +68,7 @@ input[type="text"]{
 .toggle {
     display: flex;
     align-items: center;
-    margin-bottom: 20px
+    margin-bottom: 10px
 }
 
 .toggle-btn {
@@ -73,6 +78,7 @@ input[type="text"]{
     border-radius: 30px;
     padding: 5px;
     margin: 0 10px;
+    cursor : pointer;
 }
 
 .inner-circle {
@@ -91,3 +97,8 @@ input[type="text"]{
 .unselected {
     opacity: 0.25;
 }
+
+.freepik > a {
+    color: red;
+}
+
