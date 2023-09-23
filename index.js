@@ -243,7 +243,7 @@ const alteredHexValue = () => {
 
 if('serviceWorker' in navigator) {
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('ServiceWorker.js')
+    navigator.serviceWorker.register('/ServiceWorker.js')
         .then(reg =>{
           console.log('Registered!' , reg);
         })
