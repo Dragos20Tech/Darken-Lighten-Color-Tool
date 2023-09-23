@@ -239,4 +239,16 @@ const alteredHexValue = () => {
   return "#" + word[3].replace('#','')
 }
 
+// Loading the page offline
 
+if('serviceWorker' in navigator) {
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('ServiceWorker.js')
+        .then(reg =>{
+          console.log('Registered!' , reg);
+        })
+        .catch(err => {
+          console.log('Registration failed :(' , err)
+        });
+  });
+}
