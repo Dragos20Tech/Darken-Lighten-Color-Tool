@@ -1,7 +1,7 @@
 {
   "name": "Color Tool by D20Tech",
   "short_name": "Color Tool by D20Tech",
-  "start_url" : "https://dragos-darken-lighten-color-tool.netlify.app",
+  "start_url" : "/index.html",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
